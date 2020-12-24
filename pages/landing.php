@@ -1,5 +1,11 @@
 <?php
+  if(isset($_POST['submit'])){
+    echo $_POST['roomie_id'];
+  
+  }
 session_start();
+    
+
     $arr=$_SESSION['arr'] ;
     //echo $arr['name'];
     $curr_year = date("Y"); 
@@ -21,7 +27,16 @@ session_start();
         $array[$i]=$row['Hostel_name'];
         $i=$i+1;
     }
-
+    $i=0;
+    $roomate_q="SELECT * FROM STUDENTS WHERE Student_ID LIKE '_$stu_year%'";
+    $rresult=mysqli_query($connection,$roomate_q);
+    $roomies=array();
+    while($row = mysqli_fetch_array($rresult)) {
+      // print_r($row);
+       $roomies[$i]=$row['Student_ID'];
+       $i=$i+1;
+   }
+  
 
 
 ?>
@@ -31,19 +46,35 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    
+    <link rel="stylesheet" href="../css/add_hostel.css">
 </head>
 <body>
+<div>
     <h1>Welcome <?php echo $arr['full_name']; ?>...</h1>
-    <h3>Choose an Hostel</h3>
-    <div style="width:25%" class="input-group">
-  <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon">
-    <option selected>Choose...</option>
-    <?php foreach ($array as $num) : ?>
-    <option><?= htmlspecialchars($num) ?></option>
-    <?php endforeach ?>
-  </select>
+    <div class="form">
+    <form action="landing.php" method="POST">
+        <div style="width:25%" class="form-control">
+      <select class="form-control">
+        <option selected>Pick an Hostel</option>
+        <?php foreach ($array as $num) : ?>
+        <option><?= htmlspecialchars($num) ?></option>
+        <?php endforeach ?>
+      </select>
+    </div>
+    <div class="form-control">
+        <datalist id="suggestions">
+            <?php foreach ($roomies as $num) : ?>
+        <option name="roomie-id"><?= htmlspecialchars($num) ?></option>
+        <?php endforeach ?>
+        </datalist>
+        <input  autoComplete="on" name="roomie_id" placeholder="search for roomie with id.."list="suggestions"/>     
+    </div>
+  </div>
+  <input type="submit" name="submit"  value="submit"/>
+  <input type="button" value="prev_page" onClick="document.location.href='main_land.php'">
+   </form>
 </div>
 </body>
+
 </html>

@@ -40,7 +40,7 @@
         echo 'Data inserted successfully';
         $connection->close();
 
-       header("Location:http://localhost/DBMS/pages/index.php");
+       header("Location:http://localhost/dbms/pages/index.php");
         }
     }
 ?>

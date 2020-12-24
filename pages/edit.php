@@ -28,7 +28,7 @@ $arr=$_SESSION['arr'] ;
         $arr=mysqli_fetch_array($result_mail);
           $_SESSION['arr'] = $arr;
         //  print_r($_SESSION['arr']);
-       header("Location:http://localhost/DBMS/pages/profile.php");
+       header("Location:http://localhost/dbms/pages/profile.php");
       }
    
 

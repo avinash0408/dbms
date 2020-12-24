@@ -13,7 +13,7 @@ $er='';
         $arr=mysqli_fetch_array($result_mail);
         if($arr && $arr['password']=$pass){
           $_SESSION['arr'] = $arr;
-          header("Location:http://localhost/DBMS/pages/main_land.php");
+          header("Location:http://localhost/dbms/pages/main_land.php");
         }
         else{
           $er="Invalid Login..Please enter the correct details..";
@@ -21,7 +21,7 @@ $er='';
 
     }
     if(isset($_POST['alter'])){
-      header("Location:http://localhost/DBMS/pages/admin_login.php");
+      header("Location:http://localhost/dbms/pages/admin_login.php");
   }
     // $sen="Login as".$role2;
     // echo $sen;

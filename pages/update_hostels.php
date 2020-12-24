@@ -20,7 +20,7 @@
         $sql->close();
         $connection->close();
 
-       header("Location:http://localhost/DBMS/pages/update_hostels.php");
+       header("Location:http://localhost/dbms/pages/update_hostels.php");
     }
     $query="SELECT * FROM HOSTELS WHERE 1";
     $total=mysqli_query($connection,$query);
@@ -256,8 +256,11 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Gender</label>
-                          <input type="text" name="h_gender" class="form-control" required>
+                          
+                          <input type="radio" name="h_gender" value="M" id="male" checked>
+                          <label for="male">Male</label><br>
+                          <input type="radio" name="h_gender" id="female" value="F"  >
+                          <label for="female">Female</label><br>
                         </div>
                       </div>
                     </div>
