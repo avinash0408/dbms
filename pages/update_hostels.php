@@ -16,8 +16,15 @@
         $q_a="UPDATE Admin SET Hostel_ID=(SELECT HOSTELS.Hostel_ID FROM HOSTELS WHERE HOSTELS.Admin_ID=Admin.Admin_ID)";
         $sql=$connection->prepare($q_a);
         $sql->execute();
-        echo 'Data inserted successfully';
+       
         $sql->close();
+        echo $q;
+        $ans=mysqli_fetch_array(mysqli_query($connection,$q));
+        $an=$ans[0];
+        for($i=1;$i<=$h_rooms;$i=$i+1){
+          $q=$connection->prepare("INSERT INTO ROOM VALUES('$an','$i','2')");
+          $q->execute();
+        }
         $connection->close();
 
        header("Location:http://localhost/dbms/pages/update_hostels.php");

@@ -26,10 +26,7 @@ $('.navTrigger').click(function () {
     $("#mainListDiv").fadeIn();
 });
 
-
-
-<?php foreach ($roomies as $num) : ?>
-        <option name="roomie-id"><?= htmlspecialchars($num) ?></option>
-        <?php endforeach ?>
-        </datalist>
-        <input  autoComplete="on" list="suggestions"/> 
+function myF(){
+    Snackbar.show({text: 'Example notification text.'});
+   }
+   
