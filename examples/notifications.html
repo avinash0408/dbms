@@ -23,11 +23,7 @@
 <body class="dark-edition">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="black" data-image="../assets/img/sidebar-2.jpg">
-      <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
-
-        Tip 2: you can also add an image using data-image tag
-    -->
+     
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item  ">
@@ -37,29 +33,31 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="./user.html">
+            <a class="nav-link" href="../examples/user.html">
               <i class="material-icons">person</i>
               <p>User Profile</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item  ">
             <a class="nav-link" href="../pages/admin_list.php">
               <i class="material-icons">content_paste</i>
               <p>Table List</p>
             </a>
-          </li> 
-          <li class="nav-item ">
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="../pages/update_hostels.php">
-              <i class="material-icons">content_past</i>
+              <i class="material-icons">content_paste</i>
               <p>Hostels</p>
             </a>
-          </li>         
-          <li class="nav-item active ">
-            <a class="nav-link" href="./notifications.html">
+          </li>
+         
+          <li class="nav-item active">
+            <a class="nav-link" href="../examples/notifications.html">
               <i class="material-icons">notifications</i>
               <p>Notifications</p>
             </a>
           </li>
+         
         </ul>
       </div>
     </div>
@@ -67,9 +65,6 @@
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
         <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:void(0)">Notifications</a>
-          </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
@@ -124,8 +119,17 @@
         </div>
       </nav>
       <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
      
-   
   <!--   Core JS Files   -->
   <script src="../assets/js/core/jquery.min.js"></script>
   <script src="../assets/js/core/popper.min.js"></script>
@@ -134,16 +138,13 @@
   <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
   <!-- Chartist JS -->
   <script src="../assets/js/plugins/chartist.min.js"></script>
   <!--  Notifications Plugin    -->
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/material-dashboard.js?v=2.1.0"></script>
-  <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-  <script src="../assets/demo/demo.js"></script>
+ 
   <script>
     $(document).ready(function() {
       $().ready(function() {
@@ -156,40 +157,7 @@
         $sidebar_responsive = $('body > .navbar-collapse');
 
         window_width = $(window).width();
-
-
-
-        $('.switch-sidebar-image input').change(function() {
-          $full_page_background = $('.full-page-background');
-
-          $input = $(this);
-
-          if ($input.is(':checked')) {
-            if ($sidebar_img_container.length != 0) {
-              $sidebar_img_container.fadeIn('fast');
-              $sidebar.attr('data-image', '#');
-            }
-
-            if ($full_page_background.length != 0) {
-              $full_page_background.fadeIn('fast');
-              $full_page.attr('data-image', '#');
-            }
-
-            background_image = true;
-          } else {
-            if ($sidebar_img_container.length != 0) {
-              $sidebar.removeAttr('data-image');
-              $sidebar_img_container.fadeOut('fast');
-            }
-
-            if ($full_page_background.length != 0) {
-              $full_page.removeAttr('data-image', '#');
-              $full_page_background.fadeOut('fast');
-            }
-
-            background_image = false;
-          }
-        });
+    
 
         $('.switch-sidebar-mini input').change(function() {
           $body = $('body');
@@ -225,6 +193,13 @@
 
         });
       });
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
     });
   </script>
 </body>

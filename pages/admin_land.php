@@ -106,7 +106,7 @@ $ac=0;
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="../examples/notifications.html">
+            <a class="nav-link" href="admin_feed.php">
               <i class="material-icons">notifications</i>
               <p>Notifications</p>
             </a>

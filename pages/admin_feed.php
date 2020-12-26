@@ -1,36 +1,19 @@
 <?php
-    $connection=new mysqli('localhost','root','','hostel');
-    if(!($connection))
-    echo 'connection error';
-    if(isset($_POST['add'])){
-        $h_name=$_POST['h_name'];
-        $h_rooms=$_POST['h_rooms'];
-        $h_gender=$_POST['h_gender'];
-        $h_landmark=$_POST['h_landmark'];
-        $h_batch=$_POST['h_batch'];
-        $h_admin=$_POST['h_admin'];
-        $q="INSERT INTO HOSTELS(Hostel_name,No_of_rooms,Vacant_rooms,Landmark,Gender_flag,Admin_ID,Batch)
-        VALUES('$h_name','$h_rooms','$h_rooms','$h_landmark','$h_gender','$h_admin','$h_batch')";
-        $sql=$connection->prepare($q);
-        $sql->execute();
-        $q_a="UPDATE Admin SET Hostel_ID=(SELECT HOSTELS.Hostel_ID FROM HOSTELS WHERE HOSTELS.Admin_ID=Admin.Admin_ID)";
-        $sql=$connection->prepare($q_a);
-        $sql->execute();
-       
-        $sql->close();
-        echo $q;
-        $ans=mysqli_fetch_array(mysqli_query($connection,$q));
-        $an=$ans[0];
-        for($i=1;$i<=$h_rooms;$i=$i+1){
-          $q=$connection->prepare("INSERT INTO ROOM VALUES('$an','$i','2')");
-          $q->execute();
-        }
-        $connection->close();
+session_start();
+$ar=$_SESSION['arr'];
+$connection=new mysqli('localhost','root','','hostel');
+$f1=0;
+if(isset($_POST['insert'])){
+    $feed=$_POST['feed'];
+    $a_id=$ar['Admin_ID'];
+    $q="INSERT INTO NOTICES(Subject,Admin_ID,student_id) 
+  VALUES('$feed','$a_id','0')";
+  $sql=$connection->prepare($q);
+      $sql->execute();
+      $f1=1;
+}
 
-       header("Location:http://localhost/dbms/pages/update_hostels.php");
-    }
-    $query="SELECT * FROM HOSTELS WHERE 1";
-    $total=mysqli_query($connection,$query);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,8 +42,8 @@
      
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item  ">
-            <a class="nav-link" href="admin_land.php">
+          <li class="nav-item  "><input type="hidden" name="feed">
+            <a class="nav-link" href="../pages/admin_land.php">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
@@ -71,20 +54,20 @@
               <p>User Profile</p>
             </a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="admin_list.php">
+          <li class="nav-item  ">
+            <a class="nav-link" href="../pages/admin_list.php">
               <i class="material-icons">content_paste</i>
               <p>Table List</p>
             </a>
           </li>
-          <li class="nav-item active ">
-            <a class="nav-link" href="update_hostels.php">
+          <li class="nav-item">
+            <a class="nav-link" href="../pages/update_hostels.php">
               <i class="material-icons">content_paste</i>
               <p>Hostels</p>
             </a>
           </li>
          
-          <li class="nav-item ">
+          <li class="nav-item active">
             <a class="nav-link" href="admin_feed.php">
               <i class="material-icons">notifications</i>
               <p>Notifications</p>
@@ -98,9 +81,6 @@
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
         <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:void(0)">Table List</a>
-          </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
@@ -155,144 +135,33 @@
         </div>
       </nav>
       <!-- End Navbar -->
-     
-      
       <div class="content">
         <div class="container-fluid">
-       
           <div class="row">
-            <div class="col-md-12">
+          <div class="col-md-8">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title ">Hostels</h4>
+                  <h4 class="card-title">Feed</h4>
                 </div>
                 <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead class=" text-primary">
-                        <th>
-                          ID
-                        </th>
-                        <th>
-                          Name
-                        </th>
-                        <th>
-                          # of rooms
-                        </th>
-                        <th>
-                          vacant rooms
-                        </th>
-                        <th>
-                          Gender
-                        </th>
-                        <th>
-                          Batch
-                        </th>
-                        <th>
-                          Landmark
-                        </th>
-                        <th>
-                          Admin
-                        </th>
-                      </thead>
-                      <tbody>
-                          <?php foreach ($total as $row){ ?>
-                        <tr>
-                          <td>
-                          <?php echo $row['Hostel_ID'] ?>
-                          </td>
-                          <td>
-                          <?php echo $row['Hostel_name'] ?>
-                          </td>
-                          <td class="text-primary">
-                          <?php echo $row['No_of_rooms'] ?>
-                          </td>
-                          <td>
-                          <?php echo $row['Vacant_rooms'] ?>
-                          </td>
-                          <td >
-                          <?php echo $row['Gender_flag']?>
-                          </td>
-                          <td >
-                          <?php echo $row['Batch']?>
-                          </td>
-                          <td >
-                          <?php echo $row['Landmark']?>
-                          </td>
-                          <td class="text-primary">
-                          <?php echo $row['Admin_ID']?>
-                          </td>
-                         
-                        </tr>
-                          <?php }?>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-8">
-              <div class="card">
-                <div class="card-header card-header-primary">
-                  <h4 class="card-title">Add Hostels</h4>
-                </div>
-            <div class="card-body">
-                  <form action="update_hostels.php" method="POST">
-                    <div class="row">
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Hostel Name</label>
-                          <input type="text" name="h_name" class="form-control" required>
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating"># of rooms</label>
-                          <input type="text" name="h_rooms" class="form-control" required>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Batch</label>
-                          <input type="text" name="h_batch" class="form-control" required>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          
-                          <input type="radio" name="h_gender" value="M" id="male" checked>
-                          <label for="male">Male</label><br>
-                          <input type="radio" name="h_gender" id="female" value="F"  >
-                          <label for="female">Female</label><br>
-                        </div>
-                      </div>
-                    </div>
+                  <form action="admin_feed.php" method="POST">
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Landmark</label>
-                          <input type="text" name="h_landmark"class="form-control" required>
+                          <div class="form-group">
+                            <textarea name="feed" placeholder="Write your feed here..."class="form-control" rows="5"></textarea>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Admin-ID</label>
-                          <input type="text" name="h_admin" class="form-control" required>
-                        </div>
-                      </div>
-                    </div>
-                    <button type="submit"  name='add'class="btn btn-primary pull-right">Add Hostel</button>
+                    <button type="submit" name="insert" class="btn btn-primary pull-right">Post</button>
                     <div class="clearfix"></div>
                   </form>
                 </div>
+              </div>
             </div>
-        </div>
+            </div>
+          </div>
         </div>
       </div>
      
@@ -368,6 +237,36 @@
 
     });
   </script>
+
+
+
+<?php if($f1==1){?>
+<link rel="stylesheet" href="../css/new.css">
+<script>
+ function myF(){
+  Snackbar.show({text: "Feed Posted Successfully..."});
+ }
+ 
+!function(a,b){"use strict";"function"==typeof define&&define.amd?define([],function(){return a.Snackbar=b()}):"object"==typeof module&&module.exports?module.exports=a.Snackbar=b():a.Snackbar=b()}(this,function(){var a={};a.current=null;var b={text:"Default Text",textColor:"#FFFFFF",width:"auto",showAction:!0,actionText:"Dismiss",actionTextAria:"Dismiss, Description for Screen Readers",alertScreenReader:!1,actionTextColor:"#4CAF50",showSecondButton:!1,secondButtonText:"",secondButtonAria:"Description for Screen Readers",secondButtonTextColor:"#4CAF50",backgroundColor:"#323232",pos:"bottom-left",duration:8e3,customClass:"",onActionClick:function(a){a.style.opacity=0},onSecondButtonClick:function(a){},onClose:function(a){}};a.show=function(d){var e=c(!0,b,d);a.current&&(a.current.style.opacity=0,setTimeout(function(){var a=this.parentElement;a&&
+// possible null if too many/fast Snackbars
+a.removeChild(this)}.bind(a.current),500)),a.snackbar=document.createElement("div"),a.snackbar.className="snackbar-container "+e.customClass,a.snackbar.style.width=e.width;var f=document.createElement("p");if(f.style.margin=0,f.style.padding=0,f.style.color=e.textColor,f.style.fontSize="14px",f.style.fontWeight=300,f.style.lineHeight="1em",f.innerHTML=e.text,a.snackbar.appendChild(f),a.snackbar.style.background=e.backgroundColor,e.showSecondButton){var g=document.createElement("button");g.className="action",g.innerHTML=e.secondButtonText,g.setAttribute("aria-label",e.secondButtonAria),g.style.color=e.secondButtonTextColor,g.addEventListener("click",function(){e.onSecondButtonClick(a.snackbar)}),a.snackbar.appendChild(g)}if(e.showAction){var h=document.createElement("button");h.className="action",h.innerHTML=e.actionText,h.setAttribute("aria-label",e.actionTextAria),h.style.color=e.actionTextColor,h.addEventListener("click",function(){e.onActionClick(a.snackbar)}),a.snackbar.appendChild(h)}e.duration&&setTimeout(function(){a.current===this&&(a.current.style.opacity=0,
+// When natural remove event occurs let's move the snackbar to its origins
+a.current.style.top="-100px",a.current.style.bottom="-100px")}.bind(a.snackbar),e.duration),e.alertScreenReader&&a.snackbar.setAttribute("role","alert"),a.snackbar.addEventListener("transitionend",function(b,c){"opacity"===b.propertyName&&"0"===this.style.opacity&&("function"==typeof e.onClose&&e.onClose(this),this.parentElement.removeChild(this),a.current===this&&(a.current=null))}.bind(a.snackbar)),a.current=a.snackbar,document.body.appendChild(a.snackbar);getComputedStyle(a.snackbar).bottom,getComputedStyle(a.snackbar).top;a.snackbar.style.opacity=1,a.snackbar.className="snackbar-container "+e.customClass+" snackbar-pos "+e.pos},a.close=function(){a.current&&(a.current.style.opacity=0)};
+// Pure JS Extend
+// http://gomakethings.com/vanilla-javascript-version-of-jquery-extend/
+var c=function(){var a={},b=!1,d=0,e=arguments.length;"[object Boolean]"===Object.prototype.toString.call(arguments[0])&&(b=arguments[0],d++);for(var f=function(d){for(var e in d)Object.prototype.hasOwnProperty.call(d,e)&&(b&&"[object Object]"===Object.prototype.toString.call(d[e])?a[e]=c(!0,a[e],d[e]):a[e]=d[e])};d<e;d++){var g=arguments[d];f(g)}return a};return a});
+//# sourceMappingURL=snackbar.min.js.map
+</script>
+
+<?php 
+  echo '<script type="text/javascript">',
+  'myF();',
+  '</script>'
+;
+
+?>
+<?php }?>
+
 </body>
 
 </html>
