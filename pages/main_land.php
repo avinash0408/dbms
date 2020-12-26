@@ -3,7 +3,7 @@ session_start();
     $arr=$_SESSION['arr'] ;
     $connection=new mysqli('localhost','root','','hostel');
     $rol_no=$arr['Student_ID'];
-    $noti_q="SELECT * FROM NOTICES AS N WHERE N.student_id=0 OR N.student_id='$rol_no'";
+    $noti_q="SELECT * FROM NOTICES WHERE student_id='0'";
     $result_n=mysqli_query($connection,$noti_q);
     $req_q="SELECT * FROM room_requests WHERE receiver_id='$rol_no'";
     $r_req=mysqli_query($connection,$req_q);
@@ -30,16 +30,20 @@ session_start();
     if(isset($_POST['submit'])){
       $s_name=$arr['full_name'];
       $roll=$arr['Student_ID'];
-      $room_no=406;
+      $room_no=$arr['Room_No'];
+      $Admin=$arr['Admin_ID'];
+      $h_id=$arr['Hostel_ID'];
+
       $msg=$_POST['msg'];
-      $sql=$connection->prepare("INSERT INTO COMPLAINTS(Student_ID,Subject) 
-      VALUES('$roll','$msg')");
+      $sql=$connection->prepare("INSERT INTO COMPLAINTS(Complaint_Status,Student_ID,Subject,Admin_ID,Hostel_ID,room_no) 
+      VALUES('0','$roll','$msg','$Admin','$h_id','$room_no')");
       $sql->execute();
       //echo 'Data inserted successfully';
       $sql->close();
     }
 
 $snack_text="";
+
 
 if($next==1){
   $f1=0;
@@ -49,23 +53,24 @@ if($next==1){
       $you=$arr['Student_ID'];
       $roomie_q="SELECT * FROM STUDENTS WHERE Student_ID='$roomie_id'";
       $hostel_q="SELECT * FROM HOSTELS WHERE Hostel_name='$hostel'";
-      $your_q="SELECT * FROM STUDENTS WHERE Student_ID='$you'";
       $rom_res=mysqli_query($connection,$roomie_q);
       $rom_res=mysqli_fetch_array($rom_res);
       $vacant=mysqli_query($connection,$hostel_q);
       $vacant=mysqli_fetch_array($vacant);
-      $your_res=mysqli_fetch_array(mysqli_query($connection,$your_q));
-      if($rom_res['Roomate_ID']==0 && $vacant['Vacant_rooms']!=0 ){
+      if($rom_res['Roomate_ID']==NULL && $vacant['Vacant_rooms']!=0 ){
+        if($student['Roomate_ID'])
+        $snack_text="You are already Paired..";
+        else{
       $sql=$connection->prepare("INSERT INTO room_requests(sender_id,receiver_id) VALUES('$you','$roomie_id')");
       $sql->execute();
+      
       $room_no=$vacant['No_of_rooms']-$vacant['Vacant_rooms']+1;
       $hos_id=$vacant['Hostel_ID'];
-      
+      $snack_text="Response recorded and room request sent...";
       if($student['Hostel_ID']==NULL && $student['Room_No']==NULL){
       $upd_cand="UPDATE STUDENTS SET Hostel_ID='$hos_id',Room_No='$room_no' WHERE Student_ID='$you'";
       $temp=$vacant['Vacant_rooms']-1;
       $upd_host="UPDATE HOSTELS SET Vacant_rooms='$temp' WHERE Hostel_ID='$hos_id'";
-      
       $sql=$connection->prepare($upd_cand);
       $sql->execute();
       $sql=$connection->prepare($upd_host);
@@ -74,11 +79,12 @@ if($next==1){
       $sql=$connection->prepare($upd_room);
       $sql->execute();
       }
-      $snack_text="Response recorded and room request sent...";
-      }
+    }
+  }
+      
       elseif($rom_res['Roomate_ID'])
       $snack_text="Student already Paired..";
-      elseif($your_res['Roomate_ID'])
+      elseif($student['Roomate_ID'])
       $snack_text="You are already Paired..";
       else
       $snack_text="Hostel has no vacencies..";
@@ -116,15 +122,15 @@ if($next==1){
          $i=$i+1;
         }
      }
-    }
+    
     if(isset($_POST['accept'])){
       $mate_id= $_POST['mate_id'];
       $q="SELECT * FROM STUDENTS WHERE Student_ID='$mate_id'";
       $res_q=mysqli_fetch_array(mysqli_query($connection,$q));
-      $q1="UPDATE room_requests SET flag='1' WHERE sender_id='$mate_id'";
+      $q1="UPDATE room_requests SET flag='1' WHERE sender_id='$mate_id' AND receiver_id='$rol_no'";
       $sql=$connection->prepare($q1);
       $sql->execute();
-      $q1="UPDATE room_requests SET flag='-1' WHERE sender_id!='$mate_id'";
+      $q1="UPDATE room_requests SET flag='-1' WHERE sender_id!='$mate_id' AND receiver_id='$rol_no'";
       $sql=$connection->prepare($q1);
       $sql->execute();
       $r_no=$res_q['Room_No'];
@@ -135,16 +141,39 @@ if($next==1){
       $q2="UPDATE STUDENTS SET Roomate_ID='$rol_no' WHERE Student_ID='$mate_id'";
       $sql=$connection->prepare($q2);
       $sql->execute();
+      $q3="UPDATE ROOM SET Vacancies='0' WHERE Hostel_ID='$h_id' AND Room_No='$r_no'";
+      $sql=$connection->prepare($q3);
+      $sql->execute();
       header("Location:http://localhost/dbms/pages/main_land.php");
 
     }
     if(isset($_POST['reject'])){
-      $q1="UPDATE room_requests SET flag='-1' WHERE sender_id='$mate_id'";
+    
+      $mate_id= $_POST['mate_id'];
+      $q1="UPDATE room_requests SET flag='-1' WHERE sender_id='$mate_id' AND receiver_id='$rol_no'";
+      echo $q1;
       $sql=$connection->prepare($q1);
       $sql->execute();
+    
       header("Location:http://localhost/dbms/pages/main_land.php");
     }
-  
+    
+   
+  }
+  $q="SELECT * FROM STUDENTS WHERE Student_ID='$rol_no'";
+  $q_res=mysqli_fetch_array(mysqli_query($connection,$q));
+  if($q_res['Admin_ID']==NULL && $q_res['Hostel_ID']){
+    $ho_id=$q_res['Hostel_ID'];
+    $q="SELECT * FROM HOSTELS WHERE Hostel_ID='$ho_id'";
+    $ad=mysqli_fetch_array(mysqli_query($connection,$q));
+    $ad_id=$ad['Admin_ID'];
+    $q2="UPDATE STUDENTS SET Admin_ID='$ad_id' WHERE Student_ID='$rol_no'" ;
+    $sql=$connection->prepare($q2);
+    $sql->execute();
+    $q="SELECT * FROM STUDENTS WHERE Student_ID='$rol_no'";
+    $q_res=mysqli_fetch_array(mysqli_query($connection,$q));
+  }
+  $_SESSION['arr']=$q_res;
 ?>
 
 <!DOCTYPE html>
@@ -179,6 +208,7 @@ if($next==1){
                     <li><a href="profile.php">Profile</a></li>
                     <li><a href="#">Settings</a></li>
                     <li><a href="#">Contact Us</a></li>
+                    <li><a href="new.php">Notifications</a></li>
                     <li><a href="index.php">Log Out</a></li>
     </ul>
   </div>
@@ -291,9 +321,10 @@ if($next==1){
         <td><?php echo $i?></td>
         <td><?php echo $r['name']?></td>
         <td><input name="mate_id" type="hidden" value="<?php echo $r['roll']?>"><?php echo $r['roll']?></td>
-        <td><input type="submit" name="accept" class="btn btn-link"value="Accept" style="position:relative;top:-5px">
+        <td><input type="submit" name="accept" class="btn btn-sm  btn-link"value="Accept" style="position:relative;top:-5px">
         <span style="position:relative;top:-5px">(or)</span>
-        <input type="submit" name="reject" class="btn btn-link" value="Reject"style="position:relative;top:-5px"></td>
+        <input type="submit" name="reject" class="btn  btn-sm btn-link"value="Reject" style="position:relative;top:-5px"></td>
+        </form>
       </tr>
       </form>
       <?php $i=$i+1;}?>
@@ -405,6 +436,11 @@ var c=function(){var a={},b=!1,d=0,e=arguments.length;"[object Boolean]"===Objec
 
 ?>
 <?php }?>
+
+
+
+
+
 </body>
 
 </html>

@@ -1,14 +1,59 @@
 <?php
+session_start();
+$ar=$_SESSION['arr'];
 $connection=new mysqli('localhost','root','','hostel');
-$q1="SELECT * FROM COMPLAINTS";
+if(isset($_POST['clear'])){
+  $c_no=$_POST['c_no'];
+  $stu_id=$_POST['stu_id'];
+  $status=$_POST['status'];
+  $sub=$_POST['sub'];
+  $msg="";
+  $f=0;
+  $ad_id=$ar['Admin_ID'];
+  $q="DELETE FROM COMPLAINTS WHERE Complaint_No='$c_no'";
+  $sql=$connection->prepare($q);
+      $sql->execute();
+  if($status==0){
+      $msg="Your complaint :".$sub." has been rejected.";
+      $f=1;
+    }
+  elseif($status==1){
+    $msg="Your complaint :".$sub." has been Cleared..";
+    $f=1;
+  }
+  if($f==1){
+  $q="INSERT INTO NOTICES(Subject,Admin_ID,student_id) 
+  VALUES('$msg','$ad_id','$stu_id')";
+  $sql=$connection->prepare($q);
+      $sql->execute();
+  }
+
+}
+elseif(isset($_POST['accept'])){
+  $c_no=$_POST['c_no'];
+  $stu_id=$_POST['stu_id'];
+  $sub=$_POST['sub'];
+  $ad_id=$ar['Admin_ID'];
+  $q="UPDATE  COMPLAINTS SET Complaint_Status='1' WHERE Complaint_No='$c_no'";
+  $sql=$connection->prepare($q);
+      $sql->execute();
+      $msg="Your complaint :".$sub." has been Accepted..";
+      $q="INSERT INTO NOTICES(Subject,Admin_ID,student_id) 
+  VALUES('$msg','$ad_id','$stu_id')";
+  $sql=$connection->prepare($q);
+      $sql->execute();
+
+}
+$q1="SELECT * FROM COMPLAINTS WHERE Complaint_Status='0' OR Complaint_Status='1'";
 $result=mysqli_query($connection,$q1);
 $c_no=0;
-foreach ($result as $ar){
-$c_no=$c_no+1;
+foreach($result as $r){
+  $c_no=$c_no+1;
 }
 $q2="SELECT * FROM Admin";
 $admins=mysqli_query($connection,$q2);
 $ac=0;
+  
 ?>
 
 <!DOCTYPE html>
@@ -178,14 +223,15 @@ $ac=0;
                     <div class="tab-pane active" id="profile">
                       <table class="table">
                       <thead class=" text-primary">
-                      <th>
-                          Accept
-                        </th>
                         <th>
                           Roll number
                         </th>
+                        <th>Room No.</th>
                         <th>
                           Complaint
+                        </th>
+                        <th>
+                          Status
                         </th>
                         <th>
                           Clear
@@ -193,27 +239,32 @@ $ac=0;
                         
                       </thead>
                         <tbody>
+                        
                             <?php foreach($result as $ar) {?>
+                              <form action="admin_land.php" method="post">
                           <tr>
+                            <td> <input type="hidden" name="stu_id" value="<?php echo $ar['Student_ID']?>"><?php echo $ar['Student_ID']?></td>
+                            <td><?php echo $ar['room_no']?></td>
+                            <input type="hidden" name="status" value="<?php echo $ar['Complaint_Status']?>">
+                            <td><input type="hidden" name="sub" value="<?php echo $ar['Subject']?>"><?php echo $ar['Subject']?></td>
+                            <input type="hidden" name="c_no" value=<?php echo $ar['Complaint_No']?>>
                             <td>
-                              <div class="form-check">
-                                <label class="form-check-label">
-                                  <input class="form-check-input" type="checkbox" value="" >
-                                  <span class="form-check-sign">
-                                    <span class="check" title="accept"></span>
-                                  </span>
-                                </label>
-                              </div>
+                            <?php if($ar['Complaint_Status']==0){ ?>
+                                  <input class="btn btn-primary btn-sm" type="submit" name="accept" value="Accept" >
+                                  <?php }else{  ?>
+                                    Accepted
+                                    <?php } ?>
+
                             </td>
-                            <td> <?php echo $ar['Student_ID']?></td>
-                            <td><?php echo $ar['Subject']?></td>
                             <td class="td-actions text-right">
-                              <button type="button" rel="tooltip" title="Remove" class="btn btn-white btn-link btn-sm">
+                              <button type="submit" rel="tooltip" title="Remove" name='clear' class="btn btn-white btn-link btn-sm">
                                 <i class="material-icons">close</i>
                               </button>
                             </td>
                           </tr>
+                          </form>
                             <?php }?>
+                            
                         </tbody>
                       </table>
                     </div>
@@ -300,6 +351,9 @@ $ac=0;
 
     });
   </script>
+
+
+  
 </body>
 
 </html>

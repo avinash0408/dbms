@@ -65,6 +65,7 @@ $arr=$_SESSION['arr'] ;
                     <li><a href="profile.php">Profile</a></li>
                     <li><a href="#">Settings</a></li>
                     <li><a href="#">Contact Us</a></li>
+                    <li><a href="new.php">Notifications</a></li>
                     <li><a href="index.php">Log Out</a></li>
     </ul>
   </div>
