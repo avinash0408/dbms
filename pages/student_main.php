@@ -145,7 +145,7 @@ if($next==1){
       $q3="UPDATE ROOM SET Vacancies='0' WHERE Hostel_ID='$h_id' AND Room_No='$r_no'";
       $sql=$connection->prepare($q3);
       $sql->execute();
-      header("Location:http://localhost/dbms/pages/main2.php");
+      header("Location:http://localhost/dbms/pages/student_main.php");
 
     }
     if(isset($_POST['reject'])){
@@ -156,7 +156,7 @@ if($next==1){
       $sql=$connection->prepare($q1);
       $sql->execute();
     
-      header("Location:http://localhost/dbms/pages/main2.php");
+      header("Location:http://localhost/dbms/pages/student_main.php");
     }
     
    
@@ -210,9 +210,9 @@ if($next==1){
 
   <div class="nav-list-container">
     <ul class="nav-list">
-    <li><a href="main2.php">Home</a></li>
+    <li><a href="student_main.php">Home</a></li>
                     <li><a href="profile.php">Profile</a></li>
-                    <li><a href="new.php">Notifications</a></li>
+                    <li><a href="notifications.php">Notifications</a></li>
                     <li><a href="index.php">Log Out</a></li>
     </ul>
   </div>
@@ -254,7 +254,7 @@ if($next==1){
         <!-- Modal body -->
         <div class="modal-body" style="display:flex; justify-content:center;padding:2%">
         <div class="form">
-    <form action="main2.php" method="POST">
+    <form action="student_main.php" method="POST">
         <div style="width:25%">
       <select name="hostel"  required >
         <?php if($student['Hostel_ID']==NULL){?>
@@ -320,7 +320,7 @@ if($next==1){
     <tbody>
     
       <?php $i=1; foreach($requests as $r){?>
-        <form action="main2.php" method="POST">
+        <form action="student_main.php" method="POST">
       <tr>
         <td><?php echo $i?></td>
         <td><?php echo $r['name']?></td>
@@ -371,7 +371,7 @@ if($next==1){
       </svg>
     </div>
     <div class="chat-popup" id="myForm">
-  <form action="main2.php" class="form-container" method="POST">
+  <form action="student_main.php" class="form-container" method="POST">
     <h1>Complaint</h1>
     <textarea placeholder="Type your issue.." name="msg" required></textarea>
 

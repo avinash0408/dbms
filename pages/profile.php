@@ -49,9 +49,9 @@ session_start();
 
   <div class="nav-list-container">
     <ul class="nav-list">
-    <li><a href="main2.php">Home</a></li>
+    <li><a href="student_main.php">Home</a></li>
                     <li><a href="profile.php">Profile</a></li>
-                    <li><a href="new.php">Notifications</a></li>
+                    <li><a href="notifications.php">Notifications</a></li>
                     <li><a href="index.php">Log Out</a></li>
     </ul>
   </div>

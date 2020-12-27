@@ -34,7 +34,6 @@ $f1=0;
   <!-- CSS Files -->
   <link href="../assets/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />
  
-  <link href="../assets/demo/demo.css" rel="stylesheet" />
 </head>
 
 <body class="dark-edition">

@@ -48,7 +48,7 @@ if(isset($_POST['clear'])){
     $q="DELETE FROM NOTICES WHERE Notice_ID='$n_id'";
     $sql=$connection->prepare($q);
     $sql->execute();
-    header("Location:http://localhost/dbms/pages/new.php");
+    header("Location:http://localhost/dbms/pages/notifications.php");
   }
   elseif($n_id!=-1 && $flag==-2){
     echo "You don't have rights to delete this feed..";
@@ -57,7 +57,7 @@ if(isset($_POST['clear'])){
     $q="DELETE FROM room_requests WHERE sender_id='$rol_no' AND receiver_id='$s_id'";
     $sql=$connection->prepare($q);
     $sql->execute();
-    header("Location:http://localhost/dbms/pages/new.php");
+    header("Location:http://localhost/dbms/pages/notifications.php");
   }
 }
 ?>
@@ -86,10 +86,10 @@ if(isset($_POST['clear'])){
 
   <div class="nav-list-container">
     <ul class="nav-list">
-    <li><a href="main2.php">Home</a></li>
+    <li><a href="student_main.php">Home</a></li>
                     <li><a href="profile.php">Profile</a></li>
                     
-                    <li><a href="new.php">Notifications</a></li>
+                    <li><a href="notifications.php">Notifications</a></li>
                     <li><a href="index.php">Log Out</a></li>
     </ul>
   </div>
@@ -109,7 +109,7 @@ if(isset($_POST['clear'])){
   </thead>
   <tbody>
   <?php $i=1; foreach($notif as $not){ ?>
-    <form action="new.php" method="POST">
+    <form action="notifications.php" method="POST">
     <tr>
       <th scope="row"><?php echo $i;?></th>
       <td><?php echo $not['sender_name'];?></td>
