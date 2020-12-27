@@ -1,5 +1,8 @@
 <?php
     $connection=new mysqli('localhost','root','','hostel');
+    session_start();
+$ar=$_SESSION['arr'];
+$ad_id=$ar['Admin_ID'];
     if(!($connection))
     echo 'connection error';
     if(isset($_POST['add'])){
@@ -31,6 +34,7 @@
     }
     $query="SELECT * FROM HOSTELS WHERE 1";
     $total=mysqli_query($connection,$query);
+    $_SESSION['arr']=$ar;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,12 +69,14 @@
               <p>Dashboard</p>
             </a>
           </li>
+          <?php if($ad_id==1){?>
           <li class="nav-item ">
-            <a class="nav-link" href="../examples/user.html">
-              <i class="material-icons">person</i>
-              <p>User Profile</p>
+            <a class="nav-link" href="add_admins.php">
+              <i class="material-icons">person_pin</i>
+              <p>Add Admins</p>
             </a>
           </li>
+          <?php }?>
           <li class="nav-item ">
             <a class="nav-link" href="admin_list.php">
               <i class="material-icons">content_paste</i>
@@ -79,17 +85,18 @@
           </li>
           <li class="nav-item active ">
             <a class="nav-link" href="update_hostels.php">
-              <i class="material-icons">content_paste</i>
+              <i class="material-icons">where_to_vote</i>
               <p>Hostels</p>
             </a>
           </li>
          
           <li class="nav-item ">
             <a class="nav-link" href="admin_feed.php">
-              <i class="material-icons">notifications</i>
-              <p>Notifications</p>
+              <i class="material-icons">announcement</i>
+              <p>Post Feed</p>
             </a>
           </li>
+         
          
         </ul>
       </div>
@@ -126,27 +133,11 @@
                   </p>
                 </a>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="material-icons">notifications</i>
-                  <span class="notification">5</span>
-                  <p class="d-lg-none d-md-block">
-                    Some Actions
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="javascript:void(0)">Mike John responded to your email</a>
-                  <a class="dropdown-item" href="javascript:void(0)">You have 5 new tasks</a>
-                  <a class="dropdown-item" href="javascript:void(0)">You're now friend with Andrew</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Another Notification</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Another One</a>
-                </div>
-              </li>
               <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)">
-                  <i class="material-icons">person</i>
+                <a class="nav-link" href="admin_login.php">
+                <i class="material-icons">login</i>
                   <p class="d-lg-none d-md-block">
-                    Account
+                    Logout
                   </p>
                 </a>
               </li>

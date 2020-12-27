@@ -13,7 +13,7 @@ $er='';
         $arr=mysqli_fetch_array($result_mail);
         if($arr && $arr['password']=$pass){
           $_SESSION['arr'] = $arr;
-          header("Location:http://localhost/dbms/pages/main_land.php");
+          header("Location:http://localhost/dbms/pages/main2.php");
         }
         else{
           $er="Invalid Login..Please enter the correct details..";

@@ -30,7 +30,7 @@ session_start();
 
   <div class="nav-list-container">
     <ul class="nav-list">
-    <li><a href="new.php">Home</a></li>
+    <li><a href="main2.php">Home</a></li>
                     <li><a href="profile.php">Profile</a></li>
                     <li><a href="#">Settings</a></li>
                     <li><a href="#">Contact Us</a></li>

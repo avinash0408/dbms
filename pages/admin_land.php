@@ -1,6 +1,7 @@
 <?php
 session_start();
 $ar=$_SESSION['arr'];
+$ad_id=$ar['Admin_ID'];
 $connection=new mysqli('localhost','root','','hostel');
 if(isset($_POST['clear'])){
   $c_no=$_POST['c_no'];
@@ -44,7 +45,7 @@ elseif(isset($_POST['accept'])){
       $sql->execute();
 
 }
-$q1="SELECT * FROM COMPLAINTS WHERE Complaint_Status='0' OR Complaint_Status='1'";
+$q1="SELECT * FROM COMPLAINTS WHERE  Admin_ID='$ad_id' AND Complaint_Status>'-1'";
 $result=mysqli_query($connection,$q1);
 $c_no=0;
 foreach($result as $r){
@@ -53,6 +54,8 @@ foreach($result as $r){
 $q2="SELECT * FROM Admin";
 $admins=mysqli_query($connection,$q2);
 $ac=0;
+
+$_SESSION['arr']=$ar;
   
 ?>
 
@@ -86,12 +89,14 @@ $ac=0;
               <p>Dashboard</p>
             </a>
           </li>
+          <?php if($ad_id==1){?>
           <li class="nav-item ">
-            <a class="nav-link" href="../examples/user.html">
-              <i class="material-icons">person</i>
-              <p>User Profile</p>
+            <a class="nav-link" href="add_admins.php">
+              <i class="material-icons">person_pin</i>
+              <p>Add Admins</p>
             </a>
           </li>
+          <?php }?>
           <li class="nav-item ">
             <a class="nav-link" href="../pages/admin_list.php">
               <i class="material-icons">content_paste</i>
@@ -101,16 +106,17 @@ $ac=0;
          
           <li class="nav-item">
             <a class="nav-link" href="update_hostels.php">
-              <i class="material-icons">content_paste</i>
+              <i class="material-icons">where_to_vote</i>
               <p>Hostels</p>
             </a>
           </li>
           <li class="nav-item ">
             <a class="nav-link" href="admin_feed.php">
-              <i class="material-icons">notifications</i>
-              <p>Notifications</p>
+              <i class="material-icons">announcement</i>
+              <p>Post Feed</p>
             </a>
           </li>
+         
          
         </ul>
       </div>
@@ -147,23 +153,12 @@ $ac=0;
                   </p>
                 </a>
               </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="material-icons">notifications</i>
-                  <span class="notification"><?php echo $c_no; ?></span>
-                  <p class="d-lg-none d-md-block">
-                    Some Actions
-                  </p>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="javascript:void(0)">You got a new complaint</a>
-                </div>
-              </li>
+              
               <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)">
-                  <i class="material-icons">person</i>
+                <a class="nav-link" href="admin_login.php">
+                  <i class="material-icons">login</i>
                   <p class="d-lg-none d-md-block">
-                    Account
+                    Logout
                   </p>
                 </a>
               </li>

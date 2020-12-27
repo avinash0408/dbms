@@ -174,6 +174,11 @@ if($next==1){
     $q_res=mysqli_fetch_array(mysqli_query($connection,$q));
   }
   $_SESSION['arr']=$q_res;
+  if($q_res['Hostel_ID']!=NULL){
+    $ad_id=$q_res['Admin_ID'];
+    $updates_q="SELECT * FROM NOTICES WHERE student_id='1' AND Admin_ID='$ad_id'";
+    $result_updates=mysqli_query($connection,$updates_q);
+  }
 ?>
 
 <!DOCTYPE html>
