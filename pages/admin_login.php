@@ -73,7 +73,6 @@ $er='';
             echo $er
             ?></small>
                 <br>
-            	<a href="signup.php">New here? Create one!</a>
               <input type="submit" class="btn" name='login'value=Login>
               <input type="submit" class="btn" name='alter'value='Login as Student'>
             </form>

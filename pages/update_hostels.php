@@ -35,6 +35,52 @@ $ad_id=$ar['Admin_ID'];
     $query="SELECT * FROM HOSTELS WHERE 1";
     $total=mysqli_query($connection,$query);
     $_SESSION['arr']=$ar;
+    if(isset($_POST['Send'])){
+       
+        $null=NULL;
+        $q="UPDATE STUDENTS SET Roomate_ID=NULL,Hostel_ID=NULL,Admin_ID=NULL,Room_No=NULL WHERE 1";
+        $sql=$connection->prepare($q);
+        $sql->execute();
+
+        $q="UPDATE ROOM SET Vacancies='2' WHERE 1";
+        $sql=$connection->prepare($q);
+        $sql->execute();
+
+        $q="DELETE FROM room_requests WHERE 1";
+        $sql=$connection->prepare($q);
+        $sql->execute();
+        $q="DELETE FROM NOTICES WHERE 1";
+        $sql=$connection->prepare($q);
+        $sql->execute();
+        $q="DELETE FROM COMPLAINTS WHERE 1";
+        $sql=$connection->prepare($q);
+        $sql->execute();
+        $sql=$connection->prepare("ALTER TABLE room_requests AUTO_INCREMENT=1");
+        $sql->execute();
+        $sql=$connection->prepare("ALTER TABLE NOTICES AUTO_INCREMENT=1");
+        $sql->execute();
+        $sql=$connection->prepare("ALTER TABLE COMPLAINTS AUTO_INCREMENT=1");
+        $sql->execute();
+
+        $sql=$connection->prepare("UPDATE HOSTELS SET Vacant_rooms=No_of_rooms");
+        $sql->execute();
+
+        $q="INSERT INTO NOTICES(Subject,Admin_ID,student_id) VALUES('New Hostel Update','1','0')";
+        $sql=$connection->prepare($q);
+        $sql->execute();
+
+        
+
+        header("Location:http://localhost/dbms/pages/update_hostels.php");
+    }
+    if(isset($_POST['Remove'])){
+      $q="DELETE FROM NOTICES WHERE student_id='0'";
+      $sql=$connection->prepare($q);
+      $sql->execute();
+      header("Location:http://localhost/dbms/pages/update_hostels.php");
+  }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -150,7 +196,14 @@ $ad_id=$ar['Admin_ID'];
       
       <div class="content">
         <div class="container-fluid">
-       
+        <?php if($ad_id==1){?>
+        <div style="display: flex;justify-content:center">
+              <form action="update_hostels.php" method="POST">
+                <button type="submit"  name='Send'class="btn btn-primary ">Send Hostel Update</button>
+                <button type="submit"  name='Remove'class="btn btn-warning">Remove Hostel Update</button>
+                </form>
+                </div>
+                <?php } ?>
           <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -282,7 +335,9 @@ $ad_id=$ar['Admin_ID'];
                     <div class="clearfix"></div>
                   </form>
                 </div>
+                
             </div>
+             
         </div>
         </div>
       </div>

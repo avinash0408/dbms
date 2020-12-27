@@ -43,14 +43,13 @@ $arr=$_SESSION['arr'] ;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/profile1.css">
 </head>
 <body>
     
 <nav class="navbar">
-  <!--brand image-->
-  <a href="#" class="brand">
-                <img src="https://image.flaticon.com/icons/svg/753/753354.svg" alt="logo">
+<a href="#" class="brand">
+              <!-- //  <img src="https://image.flaticon.com/icons/svg/753/753354.svg" alt="logo"> -->
            </a>
   <!--toggler-->
   <button class="toggler">
@@ -61,10 +60,8 @@ $arr=$_SESSION['arr'] ;
 
   <div class="nav-list-container">
     <ul class="nav-list">
-    <li><a href="main_land.php">Home</a></li>
+    <li><a href="main2.php">Home</a></li>
                     <li><a href="profile.php">Profile</a></li>
-                    <li><a href="#">Settings</a></li>
-                    <li><a href="#">Contact Us</a></li>
                     <li><a href="new.php">Notifications</a></li>
                     <li><a href="index.php">Log Out</a></li>
     </ul>
@@ -143,7 +140,7 @@ $arr=$_SESSION['arr'] ;
            		    	<i class="fas fa-lock"></i>
            		   </div>
            		   <div class="div">
-           		    	<input type="password" name="password" class="input" value=<?php echo $arr['password'];?> required>
+           		    	<input type="text" name="password" class="input" value=<?php echo $arr['password'];?> required>
                    </div>
                 </div>
               

@@ -2,7 +2,9 @@
 session_start();
 $ar=$_SESSION['arr'];
 $ad_id=$ar['Admin_ID'];
+
 $connection=new mysqli('localhost','root','','hostel');
+
 $f1=0;
 if(isset($_POST['insert'])){
     $feed=$_POST['feed'];
@@ -14,6 +16,15 @@ if(isset($_POST['insert'])){
       $f1=1;
 }
 $_SESSION['arr']=$ar;
+if(isset($_POST['clear'])){
+  $n_id=$_POST['n_id'];
+  $q="DELETE FROM NOTICES WHERE Notice_ID='$n_id'";
+  $sql=$connection->prepare($q);
+      $sql->execute();
+
+}
+$q="SELECT * FROM NOTICES WHERE Admin_ID='$ad_id' AND student_id='1'";
+$total=mysqli_query($connection,$q);
 
 ?>
 <!DOCTYPE html>
@@ -150,8 +161,58 @@ $_SESSION['arr']=$ar;
             </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">Recent Feeds</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th>
+                          #
+                        </th>
+                        <th>
+                          Feed
+                        </th>
+                        <th>
+                          Clear
+                        </th>
+                        
+                      </thead>
+                      <tbody>
+                          <?php $var=1;foreach ($total as $row){ ?>
+                            <form action="admin_feed.php" method="POST">
+                        <tr>
+                          <td>
+                          <?php echo $var ?>
+                          </td>
+                          <td>
+                          <?php echo $row['Subject'] ?>
+                          </td>
+                          <td>
+                            <input type="hidden" name="n_id" value="<?php echo $row['Notice_ID'] ?>">
+                          <button type="submit" name="clear" class="btn btn-primary">Clear</button>
+                          </td>
+                        </tr>
+                        </form>
+                          <?php $var=$var+1;}?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+
+    
+         
+       
      
   <!--   Core JS Files   -->
   <script src="../assets/js/core/jquery.min.js"></script>

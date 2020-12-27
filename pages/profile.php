@@ -1,6 +1,25 @@
 <?php
 session_start();
     $arr=$_SESSION['arr'] ;
+    $connection=new mysqli('localhost','root','','hostel');
+    $id=$arr['Student_ID'];
+    $f=0;
+    if($arr['Hostel_ID']!=NULL){
+      $hostel=$arr['Hostel_ID'];
+      $room=$arr['Room_No'];
+      $q="SELECT  Hostel_name FROM HOSTELS WHERE Hostel_ID='$hostel'";
+      $h=mysqli_fetch_array(mysqli_query($connection,$q));
+      $hostel=$h['Hostel_name'];
+      $f=1;
+    }
+    if($arr['Roomate_ID']!=NULL){
+      $r_id=$arr['Roomate_ID'];
+      $q="SELECT * FROM STUDENTS WHERE Student_ID='$r_id'";
+      $r=mysqli_fetch_array(mysqli_query($connection,$q));
+      $r_name=$r['full_name'];
+      $r_phone=$r['PhoneNo'];
+      $f=2;
+    }
 //echo $arr['name'];
 //session_destroy(); 
 ?>
@@ -32,8 +51,6 @@ session_start();
     <ul class="nav-list">
     <li><a href="main2.php">Home</a></li>
                     <li><a href="profile.php">Profile</a></li>
-                    <li><a href="#">Settings</a></li>
-                    <li><a href="#">Contact Us</a></li>
                     <li><a href="new.php">Notifications</a></li>
                     <li><a href="index.php">Log Out</a></li>
     </ul>
@@ -51,8 +68,7 @@ session_start();
 			<form action="edit.php" autocomplete="off" method="POST">
            		<div class="input-div one">
            		   <div class="i">
-                              <i class="fas fa-user"></i>
-                              
+                              <i class="fas fa-user"></i>       
            		   </div>
            		   <div class="div">
            		   		<input type="text" name="name"class="input" value=<?php echo $arr['full_name'];?> readonly>
@@ -74,6 +90,47 @@ session_start();
            		   		<input type="text" name="roll"class="input" value=<?php echo $arr['Student_ID'];?> readonly>
                   </div>
                </div>
+               <?php if($f==1 || $f==2){?>
+                <div class="input-div one">
+           		   <div class="i">
+                              <i class="fa fa-building"></i>     
+           		   </div>
+           		   <div class="div">
+           		   		<input type="text" name="hostel"class="input" value=<?php echo $hostel;?> readonly>
+           		   </div>
+               </div>
+               <div class="input-div one">
+           		   <div class="i">
+                  <i class="fa fa-credit-card" aria-hidden="true"></i>
+   
+           		   </div>
+           		   <div class="div">
+           		   		<input type="text" name="room"class="input" value=<?php echo $room;?> readonly>
+           		   </div>
+               </div>
+               
+               <?php } ?>
+               <?php if($f==2){?>
+                <div class="input-div one">
+           		   <div class="i">
+                  <i class="fa fa-users" aria-hidden="true"></i>
+   
+           		   </div>
+           		   <div class="div">
+           		   		<input type="text" name="roomie_n"class="input" value=<?php echo $r_name;?> readonly>
+           		   </div>
+               </div>
+               <div class="input-div one">
+           		   <div class="i">
+                  <i class="fa fa-credit-card" aria-hidden="true"></i>
+   
+           		   </div>
+           		   <div class="div">
+           		   		<input type="text" name="room"class="input" value=<?php echo $room;?> readonly>
+           		   </div>
+               </div>
+               
+               <?php } ?>
                <div class="input-div">
            		   <div class="i">
            		   		<i class="fas fa-search-location"></i>
@@ -120,6 +177,7 @@ session_start();
             </form>
         </div>
        <!-- </div>  -->
+
 </div>
 </main>
 

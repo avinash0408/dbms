@@ -4,7 +4,11 @@ session_start();
     $connection=new mysqli('localhost','root','','hostel');
     $rol_no=$arr['Student_ID'];
     $noti_q="SELECT * FROM NOTICES WHERE student_id='0'";
-    $result_n=mysqli_query($connection,$noti_q);
+    $result_n=mysqli_fetch_array(mysqli_query($connection,$noti_q));
+    $next=0;
+    if($result_n!=NULL){
+      $next=1;
+    }
     $req_q="SELECT * FROM room_requests WHERE receiver_id='$rol_no'";
     $r_req=mysqli_query($connection,$req_q);
     $requests=array();
@@ -20,13 +24,10 @@ session_start();
     
     $count_req_q="SELECT COUNT(*) FROM room_requests WHERE receiver_id='$rol_no' AND flag='0'";
     $count_r_req=mysqli_fetch_array(mysqli_query($connection,$count_req_q));
-    $next=0;
+    
     $stu_q="SELECT * FROM STUDENTS WHERE Student_ID='$rol_no'";
       $student=mysqli_fetch_array(mysqli_query($connection,$stu_q));
-    foreach ($result_n as $re){
-      if($re['Subject']=='New Hostel Update')
-        $next=1; 
-    }
+  
     if(isset($_POST['submit'])){
       $s_name=$arr['full_name'];
       $roll=$arr['Student_ID'];
@@ -43,7 +44,7 @@ session_start();
     }
 
 $snack_text="";
-
+$f1=0;
 
 if($next==1){
   $f1=0;
@@ -212,7 +213,6 @@ if($next==1){
     <li><a href="main2.php">Home</a></li>
                     <li><a href="profile.php">Profile</a></li>
                     <li><a href="new.php">Notifications</a></li>
-                    <li><a href="#">Contact Us</a></li>
                     <li><a href="index.php">Log Out</a></li>
     </ul>
   </div>
@@ -223,7 +223,12 @@ if($next==1){
       <img src="http://localhost/dbms/img/bg.svg" alt=""> 
       <div class="content">
         <h2 class="myH2">Welcome, <?php echo $arr['full_name']?></h2>
-        <input data-toggle="modal" data-target="#myModal" type="submit" class='mybtn' name="choose" value="Hostel update">
+        <?php
+      if($result_n!=NULL){ ?>
+     <input data-toggle="modal" data-target="#myModal" type="submit" class='mybtn' name="choose" value="Hostel update">
+       
+       <?php }?>
+        
         <?php if($count_r_req[0]){?>
         <input data-toggle="modal" data-target="#myModal_tab"type="submit" class='mybtn' name="choose" value="Check Requests">
         <?php }?>  
@@ -298,7 +303,7 @@ if($next==1){
           <button type="button" class="close" data-dismiss="modal">×</button>
         </div>
         
-        <!-- Modal body -->d
+        <!-- Modal body -->
         <div class="modal-body" style="display:flex; justify-content:center;padding:2%">
         <div class="container">
   
