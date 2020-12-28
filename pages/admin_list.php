@@ -18,7 +18,7 @@ $ad_id=$ar['Admin_ID'];
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Material Dashboard
+    Admins List
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -55,12 +55,14 @@ $ad_id=$ar['Admin_ID'];
               <p>Table List</p>
             </a>
           </li>
+          <?php if($ad_id==1){?>
           <li class="nav-item">
             <a class="nav-link" href="update_hostels.php">
               <i class="material-icons">where_to_vote</i>
               <p>Hostels</p>
             </a>
           </li>
+          <?php }?>
          
           <li class="nav-item ">
             <a class="nav-link" href="admin_feed.php">
@@ -87,24 +89,9 @@ $ad_id=$ar['Admin_ID'];
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end">
-            <form class="navbar-form">
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <button type="submit" class="btn btn-default btn-round btn-just-icon">
-                  <i class="material-icons">search</i>
-                  <div class="ripple-container"></div>
-                </button>
-              </div>
-            </form>
+           
             <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)">
-                  <i class="material-icons">dashboard</i>
-                  <p class="d-lg-none d-md-block">
-                    Stats
-                  </p>
-                </a>
-              </li>
+              
              
               <li class="nav-item">
                 <a class="nav-link" href="admin_login.php">

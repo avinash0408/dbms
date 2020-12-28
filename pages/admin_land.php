@@ -104,12 +104,14 @@ $_SESSION['arr']=$ar;
             </a>
           </li>
          
+          <?php if($ad_id==1){?>
           <li class="nav-item">
             <a class="nav-link" href="update_hostels.php">
               <i class="material-icons">where_to_vote</i>
               <p>Hostels</p>
             </a>
           </li>
+          <?php }?>
           <li class="nav-item ">
             <a class="nav-link" href="admin_feed.php">
               <i class="material-icons">announcement</i>
@@ -135,24 +137,8 @@ $_SESSION['arr']=$ar;
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end">
-            <form class="navbar-form">
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <button type="submit" class="btn btn-default btn-round btn-just-icon">
-                  <i class="material-icons">search</i>
-                  <div class="ripple-container"></div>
-                </button>
-              </div>
-            </form>
             <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)">
-                  <i class="material-icons">dashboard</i>
-                  <p class="d-lg-none d-md-block">
-                    Stats
-                  </p>
-                </a>
-              </li>
+             
               
               <li class="nav-item">
                 <a class="nav-link" href="admin_login.php">
@@ -174,7 +160,7 @@ $_SESSION['arr']=$ar;
             <div class="col-lg-6 col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">Admin Stats</h4>
+                  <h4 class="card-title">Dashboard</h4>
                 </div>
                 <div class="card-body table-responsive">
                   <table class="table table-hover">

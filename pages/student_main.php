@@ -27,7 +27,7 @@ session_start();
     
     $stu_q="SELECT * FROM STUDENTS WHERE Student_ID='$rol_no'";
       $student=mysqli_fetch_array(mysqli_query($connection,$stu_q));
-  
+      $snack_text="";
     if(isset($_POST['submit'])){
       $s_name=$arr['full_name'];
       $roll=$arr['Student_ID'];
@@ -41,9 +41,10 @@ session_start();
       $sql->execute();
       //echo 'Data inserted successfully';
       $sql->close();
+      $snack_text="Complaint sent...";
     }
 
-$snack_text="";
+
 $f1=0;
 
 if($next==1){
