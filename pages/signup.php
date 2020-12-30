@@ -87,7 +87,7 @@
            		   		<i class="fas fa-id-badge"></i>
            		   </div>
            		   <div class="div">
-           		   		
+           		   		<h5>Roll Number</h5>
            		   		<input type="text" name="roll"class="input" required>
                   </div>
                   <br>
@@ -122,7 +122,7 @@
            		    	<i class="fas fa-birthday-cake"></i>
            		   </div>
            		   <div class="div">
-           		    	<h5>Date of Birth</h5>
+           		    	<h5></h5>
            		    	<input type="date" name="dob" class="input" required>
                    </div>
                 </div>
